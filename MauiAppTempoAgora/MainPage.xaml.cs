@@ -1,4 +1,5 @@
-﻿using MauiAppTempoAgora.Models;
+﻿using Microsoft.Maui.Networking;
+using MauiAppTempoAgora.Models;
 using MauiAppTempoAgora.Services;
 
 namespace MauiAppTempoAgora;
@@ -12,22 +13,28 @@ public partial class MainPage : ContentPage
 
     private async void Button_Clicked(object sender, EventArgs e)
     {
-        if (string.IsNullOrWhiteSpace(txt_cidade.Text))
+        // Verifica conexão
+        if (Connectivity.Current.NetworkAccess != NetworkAccess.Internet)
         {
-            await DisplayAlert("Ops", "Digite o nome de uma cidade.", "OK");
+            await DisplayAlert("Sem conexão", "Você está sem acesso à internet. Verifique sua conexão e tente novamente.", "OK");
             return;
         }
 
-        try
+        // Verifica campo vazio
+        if (string.IsNullOrWhiteSpace(txt_cidade.Text))
         {
-            var resultado = await DataService.GetPrevisao(txt_cidade.Text);
+            await DisplayAlert("Erro", "Digite uma cidade válida.", "OK");
+            return;
+        }
 
-            if (resultado == null)
-            {
-                await DisplayAlert("Erro", "Não foi possível obter a previsão do tempo.", "OK");
-                return;
-            }
+        var resultado = await DataService.GetPrevisao(txt_cidade.Text.Trim());
 
+        if (resultado == null)
+        {
+            await DisplayAlert("Erro", "Cidade não encontrada ou erro ao buscar os dados.", "OK");
+        }
+        else
+        {
             lbl_res.Text =
                 $"Clima: {resultado.main}\n" +
                 $"Descrição: {resultado.description}\n" +
@@ -36,10 +43,6 @@ public partial class MainPage : ContentPage
                 $"Visibilidade: {resultado.visibility} metros\n" +
                 $"Nascer do sol: {resultado.sunrise}\n" +
                 $"Pôr do sol: {resultado.sunset}";
-        }
-        catch (Exception ex)
-        {
-            await DisplayAlert("Erro inesperado", ex.Message, "OK");
         }
     }
 }
