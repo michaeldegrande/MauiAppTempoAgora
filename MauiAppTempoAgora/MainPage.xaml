@@ -8,10 +8,10 @@
             Padding="30,0"
             Spacing="25">
 
-            <Entry x:Name="txt_cidade"/>
+            <Entry x:Name="txt_cidade" Placeholder="Digite a cidade"/>
             <Button Text="Buscar" Clicked="Button_Clicked"/>
 
-            <Label x:Name="lbl_res"/>
+            <Label x:Name="lbl_res" Text=""/>
 
 
 
