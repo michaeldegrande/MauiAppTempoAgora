@@ -3,12 +3,15 @@
              xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
              x:Class="MauiAppTempoAgora.MainPage">
 
-    <ScrollView>
+    <ScrollView BackgroundColor="DeepSkyBlue">
         <VerticalStackLayout
             Padding="30,0"
             Spacing="25">
 
-            <Entry x:Name="txt_cidade" Placeholder="Digite a cidade"/>
+            <Label x:Name="Welcome" Text="Tempo Agora" FontSize="Subtitle" HorizontalTextAlignment="Center"/>
+
+            <Entry x:Name="txt_cidade" Placeholder="Digite a cidade" 
+                   PlaceholderColor="Black"/>
             <Button Text="Buscar" Clicked="Button_Clicked"/>
 
             <Label x:Name="lbl_res" Text=""/>
